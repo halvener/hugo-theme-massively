@@ -1,0 +1,46 @@
+<!-- Posts -->
+{{ $data := .siteData }}
+<section class="photos">
+    {{ range .posts.Pages }}
+    <article>
+        <header>
+            {{ if not .Date.IsZero }}
+            <span class="date">{{ .Date.Format (.Site.Params.DateFormat | default "January 2, 2006") }}</span>
+            {{ end }}
+            <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+        </header>
+        {{ if .Params.image }}
+        <a href="{{ .Permalink }}" class="image fit"><img src="{{ .Params.image | relURL }}" alt="" /></a>
+        {{ end }}
+        <!-- Tags Footer -->
+        <div style="text-align: center;">
+            |
+            {{ if .Params.tags }}
+                <strong>Tags:</strong>
+                {{ range $k, $v := .GetTerms "tags" }}
+                    {{- if $k }}, {{ end }}
+                        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                    {{- end }}
+                |
+            {{ end }}
+            {{ if .Params.locations }}
+                <strong>Locations:</strong>
+                {{ range $k, $v := .GetTerms "locations" }}
+                    {{- if $k }}, {{ end }}
+                        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                {{- end }}
+                |
+                {{ end }}
+            {{ if .Params.categories }}
+                <strong>Categories:</strong>
+                {{ range $k, $v := .GetTerms "categories" }}
+                    {{- if $k }}, {{ end }}
+                <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                {{- end }}
+                |
+            {{ end }}
+        </div>
+        <!-- End Tags Footer -->
+    </article>
+    {{ end }}
+</section>

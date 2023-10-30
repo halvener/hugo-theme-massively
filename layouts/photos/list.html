@@ -1,11 +1,11 @@
 {{ partial "htmlhead" . }}
 	<body lang='{{ .Site.Language.Lang | default "en-us" }}' class="is-preload">
 
-		{{- $postsFoldername := .Site.Params.Home.foldername | default "photos" }}
-		{{- $postsPageSize := .Site.Params.Home.pagesize | default 6 }}
+		{{- $postsFoldername := .Site.Params.Photos.foldername | default "photos" }}
+		{{- $postsPageSize := .Site.Params.Photos.pagesize | default 6 }}
 
 		{{- .Scratch.Set "postsFeaturedPostEnabled" true }}
-		{{- if (or (eq .Site.Params.Home.featuredpost "false") (eq .Site.Params.Home.featuredpost false)) }}
+		{{- if (or (eq .Site.Params.Photos.featuredpost "false") (eq .Site.Params.Photos.featuredpost false)) }}
 			{{- .Scratch.Set "postsFeaturedPostEnabled" false }}
 		{{- end }}
 		{{- $postsFeaturedPostEnabled := .Scratch.Get "postsFeaturedPostEnabled" }}
@@ -30,10 +30,6 @@
 		<!-- Wrapper -->
 			<div id="wrapper" class="fade-in" data-pfn="{{ $postsFoldername }}" data-ps="{{ $postsPageSize }}" data-pfp="{{ $postsFeaturedPostEnabled }}">
 
-				{{- if eq $postsPaging.PageNumber 1 -}}
-				{{- partial "intro.html" . -}}
-				{{- end -}}
-
 				{{- partial "header" . -}}
 				{{- partial "nav" . }}
 
@@ -45,7 +41,7 @@
 						{{- end }}
 
 						{{- if (not (and (eq (len $posts) 1) (eq $postsFeaturedPostEnabled true))) }}
-							{{- partial "posts/list.html" (dict "posts" $postsPaging "siteData" (index .Site.Data .Site.Language.Lang)) }}
+							{{- partial "posts/photolist.html" (dict "posts" $postsPaging "siteData" (index .Site.Data .Site.Language.Lang)) }}
 						{{- end }}
 
 						{{- $paginator := .Paginator }}

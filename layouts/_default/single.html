@@ -1,3 +1,4 @@
+<!-- Single Page Default -->
 {{ partial "htmlhead" . }}
 	<body lang='{{ .Site.Language.Lang | default "en-us" }}' class="is-preload">
 
@@ -20,10 +21,43 @@
                                 <p>{{ .Description }}</p>
                             </header>
                             {{ if .Params.image }}
-                            <div class="image main"><img src="{{ .Params.image | relURL }}" alt="" /></div>
+                                {{ if .Params.image_ref }}
+                                    <div class="image main"><a href="{{ .Params.image_ref }}"><img src="{{ .Params.image | relURL }}" alt="" /></a></div>
+                                {{ else }}
+                                    <div class="image main"><img src="{{ .Params.image | relURL }}" alt="" /></div>
+                                {{ end }}
                             {{ end }}
                             {{ .Content }}
 
+                            <!-- Tags Footer -->
+                            <div style="text-align: center;">
+                                |
+                                {{ if .Params.tags }}
+                                    <strong>Tags:</strong>
+                                    {{ range $k, $v := .GetTerms "tags" }}
+                                        {{- if $k }}, {{ end }}
+                                            <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                                        {{- end }}
+                                    |
+                                {{ end }}
+                                {{ if .Params.locations }}
+                                    <strong>Locations:</strong>
+                                    {{ range $k, $v := .GetTerms "locations" }}
+                                        {{- if $k }}, {{ end }}
+                                            <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                                        {{- end }}
+                                    |
+                                {{ end }}
+                                {{ if .Params.categories }}
+                                    <strong>Categories:</strong>
+                                    {{ range $k, $v := .GetTerms "categories" }}
+                                        {{- if $k }}, {{ end }}
+                                            <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                                        {{- end }}
+                                    |
+                                {{ end }}
+                            </div>
+                            <!-- End Tags Footer -->
                             {{ partial "postcustom" . }}
                             
                             {{ if not (eq .Params.disableComments true) }}

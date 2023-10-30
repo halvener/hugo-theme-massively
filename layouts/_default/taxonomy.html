@@ -1,0 +1,129 @@
+{{ partial "htmlhead" . }}
+	<body lang='{{ .Site.Language.Lang | default "en-us" }}' class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+                {{ partial "header" . }}
+                {{ partial "nav" . }}
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+                        <section class="post">
+                            <header class="major">
+                                <h1>{{ .Title }}</h1>
+                                <p>{{ .Description }}</p>
+                            </header>
+                            {{ if .Params.image }}
+                            <div class="image main"><img src="{{ .Params.image | relURL }}" alt="" /></div>
+                            {{ end }}
+                            {{ .Content }}
+
+                            <!-- Taxonomies for Tag Page-->
+                            {{ if eq .Title "Tags" }}
+                                <!-- create a list with all uppercase letters -->
+                                {{ $letters := split "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "" }}
+
+                                <!-- range all pages sorted by their title -->
+                                {{ range sort .Site.Taxonomies.tags }}
+                                  <!-- get the first character of each title. Assumes that the title is never empty! -->
+                                  {{ $firstChar := substr .Page.Title 0 1 | upper }}
+
+                                  <!-- in case $firstChar is a letter -->
+                                  {{ if $firstChar | in $letters }}
+                                    <!-- get the current letter -->
+                                    {{ $curLetter := $.Scratch.Get "curLetter" }}
+                                    <!-- if $curLetter isn't set or the letter has changed -->
+                                    {{ if ne $firstChar $curLetter }}
+                                    <!-- update the current letter and print it -->
+                                      {{ $.Scratch.Set "curLetter" $firstChar }}
+                                      <br /><span class="letter">{{ $firstChar }}</span><br />
+                                    {{ end }}
+                                   <a class="badge badge-tag-list-page" href="{{ .Page.Permalink }}"><i class="fas fa-tags"></i> {{ .Page.Title }} ({{ .Count }})</a>
+                                  {{ end }}
+                                 {{ end }}
+                            {{ else if eq .Title "Categories" }}
+                                <!-- create a list with all uppercase letters -->
+                                {{ $letters := split "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "" }}
+
+                                <!-- range all pages sorted by their title -->
+                                {{ range sort .Site.Taxonomies.categories }}
+                                <!-- get the first character of each title. Assumes that the title is never empty! -->
+                                {{ $firstChar := substr .Page.Title 0 1 | upper }}
+
+                                <!-- in case $firstChar is a letter -->
+                                {{ if $firstChar | in $letters }}
+                                <!-- get the current letter -->
+                                {{ $curLetter := $.Scratch.Get "curLetter" }}
+                                <!-- if $curLetter isn't set or the letter has changed -->
+                                {{ if ne $firstChar $curLetter }}
+                                <!-- update the current letter and print it -->
+                                {{ $.Scratch.Set "curLetter" $firstChar }}
+                                <br /><span class="letter">{{ $firstChar }}</span><br />
+                                {{ end }}
+                                <a class="badge badge-tag-list-page" href="{{ .Page.Permalink }}"><i class="fas fa-tags"></i> {{ .Page.Title }} ({{ .Count }})</a>
+                                {{ end }}
+                                {{ end }}
+                            {{ else if eq .Title "Locations" }}
+                                <!-- create a list with all uppercase letters -->
+                                {{ $letters := split "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "" }}
+
+                                <!-- range all pages sorted by their title -->
+                                {{ range sort .Site.Taxonomies.locations }}
+                                    <!-- get the first character of each title. Assumes that the title is never empty! -->
+                                    {{ $firstChar := substr .Page.Title 0 1 | upper }}
+
+                                    <!-- in case $firstChar is a letter -->
+                                    {{ if $firstChar | in $letters }}
+                                        <!-- get the current letter -->
+                                        {{ $curLetter := $.Scratch.Get "curLetter" }}
+                                        {{ if eq .Page.Title "Colorado" }}
+                                            <a class="badge badge-tag-list-page" href="{{ .Page.Permalink }}"><i class="fas fa-tags"></i> <h2>{{ .Page.Title }} ({{ .Count }})</h2>
+                                            <!-- TODO: Dynamically generate images -->
+                                            <img src="/images/colorado/20130527_161846.jpg"/></a>
+                                        {{ else }}
+                                            <a class="badge badge-tag-list-page" href="{{ .Page.Permalink }}"><i class="fas fa-tags"></i> <h2>{{ .Page.Title }} ({{ .Count }})</h2></a>
+                                        {{ end }}
+                                    {{ end }}
+                                {{ end }}
+                            {{ else }}
+                                <!-- Content of a tag/location/category -->
+                                <section class="photos">
+                                    {{ range .Pages.ByDate.Reverse }}
+                                    <article>
+                                        <header>
+                                            <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+                                            {{ if not .Date.IsZero }}
+                                            <span class="date">{{ .Date.Format (.Site.Params.DateFormat | default "January 2, 2006") }}</span>
+                                            {{ end }}
+                                        </header>
+                                        {{ if .Params.image }}
+                                        <a href="{{ .Permalink }}" class="image fit"><img src="{{ .Params.image | relURL }}" alt="" /></a>
+                                        {{ end }}
+                                    </article>
+                                    <hr />
+                                    {{ end }}
+                                </section>
+                            {{ end }}
+                            <br />
+                            Generated by themes/theme/layouts/_default/Taxonomy.html
+
+                            {{ partial "postcustom" . }}
+
+                            {{ if not (eq .Params.disableComments true) }}
+                            {{ template "_internal/disqus.html" . }}
+                            {{ end }}
+                        </section>
+
+					</div>
+
+                    {{ partial "footer/index" . }}
+                    {{ partial "copyright" . }}
+
+            </div>
+            {{ template "_internal/google_analytics.html" . }}
+            {{ partial "scripts/index" . }}
+	</body>
+</html>
