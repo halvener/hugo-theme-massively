@@ -42,7 +42,7 @@
                                     {{ if ne $firstChar $curLetter }}
                                     <!-- update the current letter and print it -->
                                       {{ $.Scratch.Set "curLetter" $firstChar }}
-                                      <br /><span class="letter">{{ $firstChar }}</span><br />
+                                      <br /><span class="letter"><strong>{{ $firstChar }}</strong></span><br />
                                     {{ end }}
                                    <a class="badge badge-tag-list-page" href="{{ .Page.Permalink }}"><i class="fas fa-tags"></i> {{ .Page.Title }} ({{ .Count }})</a>
                                   {{ end }}
