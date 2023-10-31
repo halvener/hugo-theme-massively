@@ -31,7 +31,12 @@
 
                             <!-- Tags Footer -->
                             <div style="text-align: center;">
-                                |
+                                <!-- Add a leading | before tags/locations/categories. Each one
+                                Will provide an end |, but we need to eliminate the starting one
+                                on pages like the About or Licensing page that don't use taxonomies -->
+                                {{ if or .Params.tags .Params.locations .Params.categories }}
+                                    |
+                                {{ end }}
                                 {{ if .Params.tags }}
                                     <strong>Tags:</strong>
                                     {{ range $k, $v := .GetTerms "tags" }}
