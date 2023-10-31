@@ -59,7 +59,27 @@
                             </div>
                             <!-- End Tags Footer -->
                             {{ partial "postcustom" . }}
-                            
+
+                            <!-- Start post navigation -->
+                            <br />
+                            <!-- Newer Posts -->
+                            <div style="font-size: 125%; width: 50%; float: left; text-align: left;">
+                                {{ with .NextInSection }}
+                                    <!-- <a href="{{ .Permalink }}"><strong>←</strong> Newer ({{ .Title }})</a> -->
+                                    <a href="{{ .Permalink }}"><strong>←</strong> Newer</a>
+                                {{ end }}
+                            </div>
+
+                            <!-- Older Posts -->
+                            <div style="font-size: 125%; width: 50%; float: right; text-align: right;">
+                                {{ with .PrevInSection }}
+                                    <!-- <a href="{{ .Permalink }}">Older ({{ .Title }}) <strong>→</strong></a> -->
+                                    <a href="{{ .Permalink }}">Older <strong>→</strong></a>
+                                {{ end }}
+                            </div>
+                            <br />
+                            <!-- End post navigation -->
+
                             {{ if not (eq .Params.disableComments true) }}
                             {{ template "_internal/disqus.html" . }}
                             {{ end }}
