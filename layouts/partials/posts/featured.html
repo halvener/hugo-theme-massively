@@ -17,7 +17,13 @@
     <a href="{{ .Permalink }}" class="image main"><img src="{{ .Params.image | relURL }}" alt="" /></a>
     {{ end }}
     <ul class="actions">
-        <li><a href="{{ .Permalink }}" class="button big">{{ $data.post.linktext }}</a></li>
+        {{ if eq .Section "photos" }}
+            <li><a href="{{ .Permalink }}" class="button">{{ $data.post.photolinktext }}</a></li>
+        {{ else if eq .Type "albums" }}
+            <li><a href="{{ .Permalink }}" class="button">{{ $data.post.albumlinktext }}</a></li>
+        {{ else }}
+            <li><a href="{{ .Permalink }}" class="button">{{ $data.post.linktext }}</a></li>
+        {{ end }}
     </ul>
 </article>
 {{ end }}
